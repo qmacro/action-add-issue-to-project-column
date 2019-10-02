@@ -68,7 +68,7 @@ async function main() {
 		const { data: columns } = await octokit.projects.listColumns({
 			project_id: project.id
 		})
-		core.debug(`Columns found for project '${prj}': ${columns.join(', ')})
+		core.debug(`Columns found for project '${prj}': ${columns.join(', ')}`)
 
 		// Now select the specific column requested
 		const column = columns.find(byName(col))
