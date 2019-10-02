@@ -1,24 +1,19 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 
-async function run() {
-	try {
-		console.log(`You sent ${core.getInput('project')} / ${core.getInput('column')}`)
+(async () => {
 
-		const octokit = new github.GitHub(core.getInput('myToken'))
+	console.log(`You sent ${core.getInput('project')} / ${core.getInput('column')}`)
 
-		const data = await octokit.projects.listForRepo({
-			owner: github.context.payload.repository.owner.login,
-			repo: github.context.payload.repository.name
-		})
+	const octokit = new github.GitHub(core.getInput('myToken'))
 
-		const projectNames = data.map(x => x.name)
+	const { data } = await octokit.projects.listForRepo({
+		owner: github.context.payload.repository.owner.login,
+		repo: github.context.payload.repository.name
+	})
 
-		core.setOutput('projects', JSON.stringify(projectnames))
-	}
-	catch (error) {
-		core.setFailed(error.message)
-	}
-}
+	const projectNames = data.map(x => x.name)
 
-run()
+	core.setOutput('projects', JSON.stringify(projectnames))
+
+})()
