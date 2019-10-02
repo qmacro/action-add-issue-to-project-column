@@ -3,8 +3,8 @@ const github = require('@actions/github')
 
 async function run() {
   try {
-    const repo = core.getInput('repo')
-    console.log(`Repo '${repo}' specified`)
+    const token = core.getInput('myToken')
+    console.log(`Token: ${token.slice(0,4)}... (total length ${token.length})`)
     console.log(`Context is '${JSON.stringify(github.context, undefined, 2)}'`)
     core.setOutput('projects', 'a,b,c')
   }
