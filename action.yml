@@ -1,13 +1,13 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'List Projects'
+description: 'List projects in a repo'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  repo:  # id of input
+    description: 'Name of the repo'
     required: true
-    default: '1000'
+    default: 'test'
 outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  projects: # output will be available to future steps
+    description: 'Comma separated list of project names, or "none"'
 runs:
   using: 'node12'
   main: 'index.js'
