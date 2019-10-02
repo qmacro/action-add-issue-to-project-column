@@ -15,7 +15,7 @@ async function run() {
 		})
 
 		const projectNames = data.map(x => x.name)
-		core.setOutput('projects', JSON.stringify(projectnames))
+		core.setOutput('projects', JSON.stringify(projectNames))
 
 	}
 	catch (error) {
