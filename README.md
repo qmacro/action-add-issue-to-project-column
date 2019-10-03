@@ -25,7 +25,7 @@ on:
     types: opened
 
 jobs:
-  list_projects:
+  assign_issue_to_project:
     runs-on: ubuntu-latest
     name: Assign new issue to project
     steps:
