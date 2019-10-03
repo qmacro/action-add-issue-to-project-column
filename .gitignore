@@ -3,6 +3,7 @@
 
 # Editors
 .vscode
+*.swp
 
 # Logs
 logs

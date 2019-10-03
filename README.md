@@ -1,113 +1,43 @@
+# Action to automatically add a new issue to a project
 
-<p align="center">
-  <a href="https://github.com/actions/javascript-action"><img alt="GitHub Actions status" src="https://github.com/actions/javascript-action/workflows/test-local/badge.svg"></a>
-</p>
+This is based on the [actions/javascript-action](https://github.com/actions/javascript-action) template. It is a 'JavaScript' action, rather than a Docker action. See [Action Types](https://github.com/actions/toolkit/blob/master/docs/action-types.md) for background info.
 
-# Create a JavaScript Action
+It is designed to run within the context of a repo, in other words, the issues we're talking about here are issues created in that repo's context, and the project is also specific to that repo (it's possible to have projects at other levels, e.g. org, but this action is for repo-specific projects).
 
-Use this template to bootstrap the creation of a JavaScript action.:rocket:
+To use it, create a workflow definition in your repo (this needs to be in `.github/workflows/`) that has a step using this action, and specify values for the following parameters which are required:
 
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.  
+- `project`: the name of the project to which you want the issue auto-added
+- `column`: the name of the specific column in that project in which you want the issue to appear
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+Note that when you add an issue to a project, you are actually, either explicitly or implicitly, adding it to a specific column in that project. Moreover (as background info) the issue isn't added 'directly'; the direct children of columns in a project are cards, and issues (as well as other entities) can be connected to a card. So basically what has to happen is that a new card has to be created, connected to the issue, and that card is added to a column in the project.
 
-## Create an action from this template
+There's also another required parameter that you must specify:
 
-Click the `Use this Template` and provide the new repo details for your action
+- `token`: the secret that GitHub generates automatically for the context of this action's execution
 
-## Code in Master
+The value of this token can be specified as `${{ secrets.GITHUB_TOKEN }}`.
 
-Install the dependencies  
-```bash
-$ npm install
-```
-
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
-```
-
-## Change action.yml
-
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-const core = require('@actions/core');
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos.  We will create a releases branch and only checkin production modules (core in this case). 
-
-Comment out node_modules in .gitignore and create a releases/v1 branch
-```bash
-# comment this out distribution branches
-# node_modules/
-```
-
-```bash
-$ git checkout -b releases/v1
-$ git commit -a -m "prod dependencies"
-```
-
-```bash
-$ npm prune --production
-$ git add node_modules
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing the releases/v1 branch
+Here's an example of a workflow definition that uses this action:
 
 ```yaml
-uses: actions/javascript-action@releases/v1
-with:
-  milliseconds: 1000
+on:
+  issues:
+    types: opened
+
+jobs:
+  list_projects:
+    runs-on: ubuntu-latest
+    name: Assign new issue to project
+    steps:
+    - name: Create new project card with issue
+      id: list
+      uses: qmacro/action-add-issue-to-project-column@releases/v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        project: 'project1'
+        column: 'Submitted'
 ```
 
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
+Note that this action is designed to be executed on an "issue opened" event, hence the `on:` specification here.
 
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and tested action
-
-```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
-```
+Make sure you specify the name of your project and project column accurately. The values here are just examples. You can use the `token: ${{ secrets.GITHUB_TOKEN }}` verbatim.
