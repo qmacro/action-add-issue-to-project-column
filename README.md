@@ -1,6 +1,6 @@
 # Action to automatically add a new issue to a project
 
-This is based on the [actions/javascript-action](https://github.com/actions/javascript-action) template. It is a 'JavaScript' action, rather than a Docker action. See [Action Types](https://github.com/actions/toolkit/blob/master/docs/action-types.md) for background info.
+This is based on the [actions/javascript-action](https://github.com/actions/javascript-action) template. It is a JavaScript action, rather than a Docker action. See [Action Types](https://github.com/actions/toolkit/blob/master/docs/action-types.md) for background info.
 
 It is designed to run within the context of a repo, in other words, the issues we're talking about here are issues created in that repo's context, and the project is also specific to that repo (it's possible to have projects at other levels, e.g. org, but this action is for repo-specific projects).
 
@@ -39,5 +39,7 @@ jobs:
 ```
 
 Note that this action is designed to be executed on an "issue opened" event, hence the `on:` specification here.
+
+Note that you should reference the '[releases/v1](https://github.com/qmacro/action-add-issue-to-project-column/tree/releases/v1)' of this action, as shown here in the `uses:` line.
 
 Make sure you specify the name of your project and project column accurately. The values here are just examples. You can use the `token: ${{ secrets.GITHUB_TOKEN }}` verbatim.
