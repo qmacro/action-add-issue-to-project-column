@@ -31,7 +31,7 @@ jobs:
     steps:
     - name: Create new project card with issue
       id: list
-      uses: qmacro/action-add-issue-to-project-column@releases/v1
+      uses: qmacro/action-add-issue-to-project-column@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         project: 'project1'
@@ -40,6 +40,6 @@ jobs:
 
 Note that this action is designed to be executed on an "issue opened" event, hence the `on:` specification here.
 
-Note that you should reference the '[releases/v1](https://github.com/qmacro/action-add-issue-to-project-column/tree/releases/v1)' of this action, as shown here in the `uses:` line.
+Note that you should reference the '[v1](https://github.com/qmacro/action-add-issue-to-project-column/releases/tag/v1)' of this action, as shown here in the `uses:` line.
 
 Make sure you specify the name of your project and project column accurately. The values here are just examples. You can use the `token: ${{ secrets.GITHUB_TOKEN }}` verbatim.
