@@ -1,13 +1,15 @@
-name: 'List Projects'
-description: 'List projects in a repo'
+name: 'Add new issue to project'
+description: 'Add a new issue card to a specific column of a specific project in your repo'
 inputs:
-  repo:  # id of input
-    description: 'Name of the repo'
+  project:
+    description: 'Name of the project within the repo'
     required: true
-    default: 'test'
-outputs:
-  projects: # output will be available to future steps
-    description: 'Comma separated list of project names, or "none"'
+  column:
+    description: 'Name of the column within the project'
+    required: true
+  token:
+    description: 'The generated GitHub secret scoped to the repo'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
