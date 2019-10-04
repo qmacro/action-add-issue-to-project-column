@@ -45,7 +45,7 @@ async function main() {
 		// from the job step.
 		const octokit = new github.GitHub(tkn)
 
-		core.debug(`Attempting to assign new issue "${ctx.issue.title}" to repo project "${prj}" column "${col}"`)
+		core.info(`Attempting to assign new issue "${ctx.issue.title}" to repo project "${prj}" column "${col}"`)
 
 		// Step 1 → projects.listForRepo()
 		// -------------------------------
@@ -55,11 +55,11 @@ async function main() {
 			owner: ctx.repository.owner.login,
 			repo: ctx.repository.name
 		})
-		core.debug(`${projects.length} projects found for repo: ${projects.length}`)
+		core.info(`${projects.length} projects found for repo: ${projects.length}`)
 
 		// Now find the specific project requested
 		const project = projects.find(byName(prj))
-		core.debug(`Project '${prj}' found, ID is '${project.id}'`)
+		core.info(`Project '${prj}' found, ID is '${project.id}'`)
 
 		// Step 2 → projects.listColumns()
 		// -------------------------------
@@ -68,11 +68,11 @@ async function main() {
 		const { data: columns } = await octokit.projects.listColumns({
 			project_id: project.id
 		})
-		core.debug(`Columns found for project '${prj}': ${columns.join(', ')}`)
+		core.info(`Columns found for project '${prj}': ${columns.join(', ')}`)
 
 		// Now select the specific column requested
 		const column = columns.find(byName(col))
-		core.debug(`Column '${col}' found, ID is '${column.id}'`)
+		core.info(`Column '${col}' found, ID is '${column.id}'`)
 
 		// Step 3 → projects.createCard()
 		// ------------------------------
